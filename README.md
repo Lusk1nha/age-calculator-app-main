@@ -1,6 +1,8 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules
+
+To view the application working click here: [age-calculator-app-main](https://age-calculator-app-main-iota.vercel.app/)
 
 Currently, two official plugins are available:
 
