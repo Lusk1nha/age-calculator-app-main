@@ -2,7 +2,7 @@
   "name": "age-calculator-app-main",
   "private": true,
   "version": "1.0.0",
-  "type": "commonjs",
+  "type": "module",
   "author": {
     "name": "Lucas Pedro da Hora",
     "email": "lucaspedro517@gmail.com"
