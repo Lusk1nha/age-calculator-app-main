@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, FieldError } from "react-hook-form";
 
 interface IInputProps {
   name: string;
@@ -9,8 +9,19 @@ interface IInputProps {
 
 function Input(props: IInputProps) {
   const { name, label, placeholder } = props;
-
   const { control } = useFormContext();
+
+  const handleInputChange =
+    (onChange: (value: number | null) => void) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.value === "") {
+        onChange(null);
+        return;
+      }
+
+      const asNumber = Number(event.target.value);
+      onChange(asNumber);
+    };
 
   return (
     <Controller
@@ -20,7 +31,7 @@ function Input(props: IInputProps) {
         field: { value, onBlur, onChange },
         formState: { errors },
       }) => {
-        const error = errors?.[name];
+        const error = errors?.[name] as FieldError | undefined;
 
         return (
           <fieldset
@@ -41,29 +52,23 @@ function Input(props: IInputProps) {
 
             <input
               title="Input a number to calculate the difference between two dates"
+              id={name}
               name={name}
-              aria-label="Input a number to calculate the difference between two dates"
+              aria-label={`Input for ${label}`}
               className={classNames(
                 "w-full h-[54px] md:h-[72px] pl-4 pr-2 py-3 text-xl md:text-[32px] text-inputText font-bold border hover:border-inputHoverBorder focus:border-inputHoverBorder caret-inputHoverBorder rounded-lg outline-none transition",
                 error ? "border-dangertext" : "border-borderColor"
               )}
-              value={value ? String(value)?.padStart(2, "0") : ""}
+              value={value ? String(value).padStart(2, "0") : ""}
               type="number"
               placeholder={placeholder}
               onBlur={onBlur}
-              onChange={(event) => {
-                if (event.target.value === "") {
-                  return onChange(null);
-                }
-
-                const asNumber = Number(event.target.value);
-                onChange(asNumber);
-              }}
+              onChange={handleInputChange(onChange)}
             />
 
             {error && (
               <p className="italic text-xs md:text-sm text-dangertext">
-                {(error?.message as string) ?? "Unknown error"}
+                {error.message ?? "Unknown error"}
               </p>
             )}
           </fieldset>

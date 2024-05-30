@@ -16,19 +16,25 @@ function Calculus(props: ICalculusProps) {
   );
 }
 
-function ResponseText(props: { value: number | null; text: string }) {
+interface IResponseTextProps {
+  value: number | null;
+  text: string;
+}
+
+function ResponseText(props: IResponseTextProps) {
   const { value, text } = props;
 
-  const aria = `${value} ${text}`;
-  const asString = (value ?? "- -")?.toString();
+  const displayValue =
+    value !== null ? value.toString().padStart(2, "0") : "- -";
+  const ariaLabel = `${displayValue} ${text}`;
 
   return (
     <h1
-      title={aria}
+      title={ariaLabel}
       className="flex gap-2 font-extrabold italic -tracking-[0.02em] text-[56px] md:text-[104px] leading-tight"
     >
-      <b className="text-highlightColor" aria-label={asString}>
-        {value ?? "- -"}
+      <b className="text-highlightColor" aria-label={displayValue}>
+        {displayValue}
       </b>{" "}
       {text}
     </h1>

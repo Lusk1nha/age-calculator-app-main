@@ -1,32 +1,34 @@
+import z from "zod";
+
 import { FormProvider, useForm } from "react-hook-form";
 import { Calculus } from "./components/Calculus";
 import { Divisor } from "./components/Divisor";
 import { Input } from "./components/Input";
 
-import z from "zod";
 import { useState } from "react";
-import { getDiffDate } from "./shared/helpers/date-helper";
-
+import { getDiffDate } from "./shared/helpers/date/date-helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+// Define validation schema using zod
 const schemaValidation = z.object({
   day: z
     .number({ message: "Cannot be empty" })
-    .int()
+    .int("Must be an integer")
     .min(1, "Must be a valid day")
     .max(31, "Must be a valid day"),
   month: z
     .number({ message: "Cannot be empty" })
-    .int("Cannot be a null")
+    .int("Must be an integer")
     .min(1, "Must be a valid month")
     .max(12, "Must be a valid month"),
   year: z
     .number({ message: "Cannot be empty" })
-    .int()
+    .int("Must be an integer")
     .min(0, "Cannot be less than 0")
     .max(new Date().getFullYear(), "Must be in the past"),
 });
 
+// Infer the form schema type from the validation schema
 type FormSchema = z.infer<typeof schemaValidation>;
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
     [number | null, number | null, number | null]
   >([null, null, null]);
 
+  // Initialize the form with react-hook-form and zodResolver
   const formInstance = useForm<FormSchema>({
     mode: "onChange",
     resolver: zodResolver(schemaValidation),
@@ -43,6 +46,7 @@ function App() {
 
   const [days, months, years] = response;
 
+  // Form submission handler
   function onSubmit(data: FormSchema) {
     const { day, month, year } = data;
 

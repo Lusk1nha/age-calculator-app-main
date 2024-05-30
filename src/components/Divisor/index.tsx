@@ -1,4 +1,4 @@
-import { SiteLogo } from "../../assets/SiteLogo";
+import { SiteLogo } from "../../shared/assets/SiteLogo";
 
 function Divisor() {
   return (
